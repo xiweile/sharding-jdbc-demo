@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: sharding-jdbc-demo
+  # 测试环境禁用Nacos配置
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false

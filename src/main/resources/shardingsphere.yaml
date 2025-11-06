@@ -1,0 +1,68 @@
+mode:
+  type: Standalone
+  repository:
+    type: JDBC
+
+dataSources:
+  ds0:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/ds0?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 12345678
+
+  ds1:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/ds1?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 12345678
+
+# 规则配置
+rules:
+  - !SHARDING
+    # 分片表配置
+    tables:
+      t_order:
+        actualDataNodes: ds$->{0..1}.t_order_$->{0..1}
+        # 分库策略
+        databaseStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: t_order_db_inline
+        # 分表策略
+        tableStrategy:
+          standard:
+            shardingColumn: order_id
+            shardingAlgorithmName: t_order_table_inline
+        # 主键生成策略
+        keyGenerateStrategy:
+          column: order_id
+          keyGeneratorName: snowflake
+
+    # 分片算法配置
+    shardingAlgorithms:
+      t_order_db_inline:
+        type: INLINE
+        props:
+          algorithm-expression: ds$->{user_id % 2}
+      t_order_table_inline:
+        type: INLINE
+        props:
+          algorithm-expression: t_order_$->{order_id % 2}
+
+    # 主键生成器配置
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+        props:
+          workerId: 123
+    auditors:
+      sharding_key_required_auditor:
+        type: DML_SHARDING_CONDITIONS
+
+
+# 属性配置
+props:
+  sql-show: true
+

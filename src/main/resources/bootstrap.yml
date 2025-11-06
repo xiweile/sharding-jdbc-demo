@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: sharding-jdbc-demo
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+
+      server-addr: 127.0.0.1:8848
+      file-extension: yml
+      namespace: dev
+      group: DEFAULT_GROUP
+      username: nacos
+      password: nacos
+      shared-configs:
+        - data-id: common-sharding.yml
+          group: DEFAULT_GROUP
+          refresh: true
+        # - data-id: common-datasource.yml
+        #   group: DEFAULT_GROUP
+        #   refresh: true
