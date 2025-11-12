@@ -39,7 +39,10 @@ rules:
         keyGenerateStrategy:
           column: order_id
           keyGeneratorName: snowflake
-
+        auditStrategy: # 分片审计策略
+          auditorNames: # 分片审计算法名称
+            - sharding_key_required_auditor
+          allowHintDisable: true # 是否禁用分片审计hint
     # 分片算法配置
     shardingAlgorithms:
       t_order_db_inline:

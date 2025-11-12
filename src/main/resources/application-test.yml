@@ -1,5 +1,9 @@
 server:
   port: 8088
+spring:
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:shardingsphere-zk.yaml
 
 # MyBatis Plus配置
 mybatis-plus:
@@ -22,6 +26,7 @@ logging:
   level:
     com.example.shardingjdbc: debug
     org.apache.shardingsphere: debug
+    com.zaxxer.hikari: INFO
+
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n'
-
